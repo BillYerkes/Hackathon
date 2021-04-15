@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Matriarchy.Models.ReportUserFavorites>
+
+@{
+    var Title = ViewBag.Title;
+    var Header = ViewBag.Header;
+}
+
+    <h2>@Header</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Title
+            </th>
+            <th>
+                Average Rating
+            </th>
+            <th>
+                Count
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvgRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+

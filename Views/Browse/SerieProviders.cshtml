@@ -1,0 +1,70 @@
+﻿
+@model PaginatedList<Matriarchy.Models.ServiceSeriesRightJoinServices>
+
+@{
+    ViewData["Title"] = "ServiceSeries";
+    var l_intReturnPage = ViewBag.returnPage;
+    var v_strSearchString = ViewBag.v_strSearchString;
+}
+
+<h2>Serie: @Model.Title</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">Offered</th>
+            <th class="text-left">Provider</th>
+            <th class="text-left">Seasons</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td align="center">
+                    @if (item.SerieCD != null)
+                    {
+                        <img src="~/images/GreenCircle.jpg" alt="Offered" class="img-responsive" />
+                    }
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td align="left">
+
+                    @Html.DisplayFor(modelItem => item.Seasons)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<form action="@Url.Action("SerieProviders")" method="post">
+    <input type="hidden" name="v_intSerieCD" value="@Model.Filter">
+    <input type="hidden" name="v_intReturnPage" value="@l_intReturnPage">
+    <input type="hidden" name="v_strTitle" value="@Model.Title">
+    @if (Model.HasPreviousPage)
+    {
+        <button type="submit" name="v_intPageNumber" value="@(Model.PageIndex -1)" class="btn btn-default">Previous</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Previous</button>
+    }
+    @if (Model.HasNextPage)
+    {
+        <button type="submit" Use name="v_intPageNumber" value="@(Model.PageIndex +1)" class="btn btn-default">Next</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Next</button>
+    }
+</form>
+
+
+<form action="@Url.Action("Series")" method="post">
+    <input type="hidden" name="v_strTitle" value="@Model.Title">
+    <input type="hidden" name="v_strSearchString" value="@v_strSearchString">
+    <button name="v_intPageNumber" value="@l_intReturnPage" type="submit" class="btn btn-link">Return to Series</button>
+</form>

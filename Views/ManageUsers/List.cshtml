@@ -1,0 +1,88 @@
+﻿@model PaginatedList<Matriarchy.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "All Users";
+    var  v_strSearchString = ViewBag.v_strSearchString ;
+    var  v_strCallingPage = ViewBag.v_strCallingPage ;
+    var  v_intReturnPage = ViewBag.v_intReturnPage ;
+}
+
+<h2>Users</h2>
+
+<form action="@Url.Action("List")" method="post">
+    <label>Search</label>
+    <input name="v_strSearchString" value="@v_strSearchString">
+    <button type="submit" class="btn btn-default">Filter</button> |
+    <button name="v_strClearFilter" value="Yes" type="submit" class="btn btn-link">Back to Full List</button>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Invalid Login Attempts
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccessFailedCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                <form action="@Url.Action("EditUser")" method="post">
+                    <input type="hidden" name="v_strAction" value="Prep">
+                    <button name="v_strUserID" value="@item.Id" type="submit" class="btn btn-link">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form action="@Url.Action("UserIssues", "Issue")" method="post">
+                    <input type="hidden" name="v_intManageUserReturnPage" value="@(Model.PageIndex)">
+                    <input type="hidden" name="v_strManageuserSearchString" value="@v_strSearchString">
+                    <button name="v_intUserID" value="@item.UserID" type="submit" class="btn btn-link">Issues</button>
+                </form>
+            </td>
+
+
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<form action="@Url.Action("List")" method="post">
+    @if (Model.HasPreviousPage)
+    {
+        <input type="hidden" name="v_strSearchString" value="@v_strSearchString">
+        <button type="submit" name="v_intPageNumber" value="@(Model.PageIndex -1)" class="btn btn-default">Previous</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Previous</button>
+    }
+    @if (Model.HasNextPage)
+    {
+        <input type="hidden" name="v_strSearchString" value="@v_strSearchString">
+        <button type="submit" Use name="v_intPageNumber" value="@(Model.PageIndex +1)" class="btn btn-default">Next</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Next</button>
+    }
+</form>

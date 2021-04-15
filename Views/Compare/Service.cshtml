@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Matriarchy.Models.Service>
+
+@{
+    ViewData["Title"] = "Services";
+}
+
+<h2>Services</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+
+            <td>
+                <a asp-action="ServiceNetworks" asp-route-ServiceCD="@item.ID">Live TV</a> |
+                <a asp-action="ServiceMovies" asp-route-ServiceCD="@item.ID">Movies</a> |
+                <a asp-action="ServiceSeries" asp-route-ServiceCD="@item.ID">Binge Series</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,137 @@
+﻿@model PaginatedList<Matriarchy.Models.SerieRating>
+
+@{
+    ViewData["Title"] = "ServiceSeries";
+}
+
+
+@if (!String.IsNullOrEmpty(@Model.SearchString))
+{
+    <h3>Available Series with '@Model.SearchString' in the Name</h3>
+}
+else
+{
+    <h3>Available Series</h3>
+}
+
+<form action="@Url.Action("Series")" method="post">
+    <label>Search</label>
+    <input name="v_strSearchString" value="@Model.SearchString">
+    <button type="submit" class="btn btn-default">Filter</button>
+    <button name="v_strClearFilter" value="Yes" type="submit" class="btn btn-link">Back to Full List</button>
+</form>
+
+
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation">
+            <form action="@Url.Action("Networks")" method="post">
+                <button name="v_strTitle" value="@Model.Title" type="submit" class="btn btn-link">Live TV</button>
+            </form>
+        </li>
+        <li role="presentation">
+            <form action="@Url.Action("Movies")" method="post">
+                <button name="v_strTitle" value="@Model.Title" type="submit" class="btn btn-link">Movies</button>
+            </form>
+        </li>
+        <li role="presentation" class="active">
+            <a href="#third" aria-controls="third" role="tab" data-toggle="tab">Series</a>
+        </li>
+
+    </ul>
+
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">Serie Name</th>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <th class="text-center">Rating</th>
+                <th class="text-center">Rate</th>
+                <th class="text-center">Remove Rating</th>
+            }
+            <th class="text-center">Providers</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <td align="center">
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+
+                    <td align="center">
+                        <form action="@Url.Action("Series")" method="post">
+                            <input type="hidden" name="v_strTitle" value="@Model.Title">
+                            <input type="hidden" name="v_intPageNumber" value="@(Model.PageIndex)">
+                            <input type="hidden" name="v_intSerieCD" value="@item.ID">
+                            <input type="hidden" name="v_strSearchString" value="@Model.SearchString">
+                            <button name="v_intRating" value="1" type="submit" class="btn btn-link">1</button>
+                            <button name="v_intRating" value="2" type="submit" class="btn btn-link">2</button>
+                            <button name="v_intRating" value="3" type="submit" class="btn btn-link">3</button>
+                            <button name="v_intRating" value="4" type="submit" class="btn btn-link">4</button>
+                            <button name="v_intRating" value="5" type="submit" class="btn btn-link">5</button>
+                        </form>
+                    </td>
+
+                    <td align="center">
+                        @if (item.Rating != null)
+                        {
+                        <form action="@Url.Action("Series")" method="post">
+                            <input type="hidden" name="v_strTitle" value="@Model.Title">
+                            <input type="hidden" name="v_intPageNumber" value="@(Model.PageIndex)">
+                            <input type="hidden" name="v_intSerieCD" value="@item.ID">
+                            <input type="hidden" name="v_strSearchString" value="@Model.SearchString">
+                            <button name="v_strClear" value="Clear" type="submit" class="btn btn-link">Remove Rating</button>
+                        </form>
+                        }
+                        else
+                        {
+                            <form>
+                                <button class="btn btn-link" disabled="disabled">Remove Rating</button>
+                            </form>
+                        }
+                    </td>
+                }
+                <td align="center">
+                    <form action="@Url.Action("SerieProviders")" method="post">
+                        <input type="hidden" name="v_strTitle" value="@item.Description">
+                        <input type="hidden" name="v_intReturnPage" value="@(Model.PageIndex)">
+                        <input type="hidden" name="v_strSearchString" value="@Model.SearchString">
+                        <button name="v_intSerieCD" value="@item.ID" type="submit" class="btn btn-link">Providers</button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<form action="@Url.Action("Series")" method="post">
+    <input type="hidden" name="v_strTitle" value="@Model.Title">
+    <input type="hidden" name="v_strSearchString" value="@Model.SearchString">
+    @if (Model.HasPreviousPage)
+    {
+        <button type="submit" name="v_intPageNumber" value="@(Model.PageIndex -1)" class="btn btn-default">Previous</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Previous</button>
+    }
+    @if (Model.HasNextPage)
+    {
+        <button type="submit" Use name="v_intPageNumber" value="@(Model.PageIndex +1)" class="btn btn-default">Next</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Next</button>
+    }
+</form>

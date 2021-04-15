@@ -1,0 +1,61 @@
+﻿@model Matriarchy.Models.Issue
+
+@{
+    var v_intReturnPage = ViewBag.v_intReturnPage;
+    var v_strController = ViewBag.v_strController;
+    var v_strAction = ViewBag.v_strAction;
+    var v_intManageUserReturnPage = ViewBag.v_intManageUserReturnPage;
+    var v_strManageuserSearchString = ViewBag.v_strManageuserSearchString;
+}
+
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <h2>Reported Issue</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <label asp-for="Subject" class="col-sm-2 col-form-lable"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Subject" class="form-control" , readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="IssueDateTime" class="col-sm-2 col-form-lable"></label>
+                <div class="col-sm-10">
+                    <input asp-for="IssueDateTime" class="form-control" , readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Description" class="col-sm-2 col-form-lable"></label>
+                <div class="col-sm-10">
+                    <textarea asp-for="Description" rows="5" class="form-control" , readonly> </textarea>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</form>
+
+@if (@v_strController == "Issue")
+{
+    @if (@v_strAction == "UserIssues")
+    {
+        <form action="@Url.Action("UserIssues")" method="post">
+            <input type="hidden" name="v_intManageUserReturnPage" value="@v_intManageUserReturnPage">
+            <input type="hidden" name="v_strManageuserSearchString" value="@v_strManageuserSearchString">
+            <button type="submit" name="v_intReturnPage" value="@v_intReturnPage" class="btn btn-link">Return To List</button>
+        </form>
+    }
+    @if (@v_strAction == "AllIssues")
+    {
+        <form action="@Url.Action("AllIssues")" method="post">
+            <button type="submit" name="v_intReturnPage" value="@v_intReturnPage" class="btn btn-link">Return To List</button>
+        </form>
+
+    }
+}
+
+

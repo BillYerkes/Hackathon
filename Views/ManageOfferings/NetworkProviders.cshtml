@@ -1,0 +1,88 @@
+﻿
+@model PaginatedList<Matriarchy.Models.ServiceNetworksRightJoinServices>
+
+@{
+    ViewData["Title"] = "ServiceNetworks";
+}
+
+<h2>Network: @Model.Title</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">Offered</th>
+            <th class="text-center">Service Provider</th>
+            <th class="text-center">Add / Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td align="center">
+                @if (item.NetworkCD != null)
+                {
+                    <img src="~/images/GreenCircle.jpg" alt="Offered" class="img-responsive" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td align="center">
+                @if (item.NetworkCD == null)
+                {
+                <form action="@Url.Action("NetworkProviders")" method="post">
+                    <input type="hidden" name="v_intNetworkCD" value="@(Model.Filter)">
+                    <input type="hidden" name="v_intServiceCD" value="@item.ID">
+                    <input type="hidden" name="v_strTitle" value="@Model.Title">
+                    <input type="hidden" name="v_intPageNumber" value="@(Model.PageIndex)">
+                    <button name="v_strAddRemove" value="Add" type="submit" class="btn btn-link">Add</button>
+                </form>
+                }
+                else
+                {
+                <form action="@Url.Action("NetworkProviders")" method="post">
+                    <input type="hidden" name="v_intNetworkCD" value="@(Model.Filter)">
+                    <input type="hidden" name="v_intServiceCD" value="@item.ID">
+                    <input type="hidden" name="v_strTitle" value="@Model.Title">
+                    <input type="hidden" name="v_intPageNumber" value="@(Model.PageIndex)">
+                    <input type="hidden" name="v_intNetworkServiceID" value="@item.NetworkServiceID">
+                    <button name="v_strAddRemove" value="Remove" type="submit" class="btn btn-link">Remove</button>
+                </form>
+                }
+            </td>
+
+
+        </tr>
+        }
+    </tbody>
+</table>
+
+<form action="@Url.Action("NetworkProviders")" method="post">
+    @if (Model.HasPreviousPage)
+    {
+        <input type="hidden" name="v_strTitle" value="@Model.Title">
+        <input type="hidden" name="v_intNetworkCD" value="@(Model.Filter)">
+        <button type="submit" name="v_intPageNumber" value="@(Model.PageIndex -1)" class="btn btn-default">Previous</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Previous</button>
+    }
+    @if (Model.HasNextPage)
+    {
+        <input type="hidden" name="v_strTitle" value="@Model.Title">
+        <input type="hidden" name="v_intNetworkCD" value="@(Model.Filter)">
+        <button type="submit" Use name="v_intPageNumber" value="@(Model.PageIndex +1)" class="btn btn-default">Next</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Next</button>
+    }
+</form>
+
+<form action="@Url.Action("Networks")" method="post">
+    <button name="v_strMoveToItem" value="@Model.Title" type="submit" class="btn btn-link">Return to Networks</button>
+</form>
+

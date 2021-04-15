@@ -1,0 +1,15 @@
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\appsettings.Development.json
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\appsettings.json
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\bundleconfig.json
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\Properties\launchSettings.json
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\Matriarchy.deps.json
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\Matriarchy.runtimeconfig.json
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\Matriarchy.runtimeconfig.dev.json
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\Matriarchy.dll
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\bin\Debug\netcoreapp2.0\Matriarchy.pdb
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\obj\Debug\netcoreapp2.0\Matriarchy.csprojAssemblyReference.cache
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\obj\Debug\netcoreapp2.0\Matriarchy.AssemblyInfoInputs.cache
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\obj\Debug\netcoreapp2.0\Matriarchy.AssemblyInfo.cs
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\obj\Debug\netcoreapp2.0\Matriarchy.dll
+E:\UMKC\CSC590\Hackathon\semester-group-assignment-group-9-master\Hackathon\obj\Debug\netcoreapp2.0\Matriarchy.pdb

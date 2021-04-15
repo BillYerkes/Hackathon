@@ -1,0 +1,83 @@
+﻿@model PaginatedList<Matriarchy.Models.GetAllIssues>
+
+@{
+    ViewData["Title"] = "User Issues";
+    var v_intUserID = ViewBag.UserID;
+    var UserEmail = ViewBag.UserEmail;
+    var v_intReturnPage = ViewBag.v_intReturnPage;
+    var v_intManageUserReturnPage = ViewBag.v_intManageUserReturnPage;
+    var v_strManageuserSearchString = ViewBag.v_strManageuserSearchString;
+}
+
+<h2>Issues opened by: @ViewBag.UserEmail</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th align="left">Subject</th>
+            <th align="left">Date Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.Subject)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.IssueDateTime)
+                </td>
+
+                <td align="left">
+                    <form action="@Url.Action("Details")" method="post">
+                        <input type="hidden" name="v_intReturnPage" value="@(Model.PageIndex)">
+                        <input type="hidden" name="v_strController" value="Issue">
+                        <input type="hidden" name="v_strAction" value="UserIssues">
+                        <input type="hidden" name="v_intManageUserReturnPage" value="@v_intManageUserReturnPage">
+                        <input type="hidden" name="v_strManageuserSearchString" value="@v_strManageuserSearchString">
+                        <button type="submit" name="v_intIssueID" value="@item.ID" class="btn btn-link">Detail</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form action="@Url.Action("List")" method="post">
+    @if (Model.HasPreviousPage)
+    {
+        <input type="hidden" name="v_intUserID" value="@v_intUserID">
+        <button type="submit" name="v_intPageNumber" value="@(Model.PageIndex -1)" class="btn btn-default">Previous</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Previous</button>
+    }
+    @if (Model.HasNextPage)
+    {
+        <input type="hidden" name="v_intUserID" value="@v_intUserID">
+        <button type="submit" Use name="v_intPageNumber" value="@(Model.PageIndex +1)" class="btn btn-default">Next</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Next</button>
+    }
+</form>
+
+
+@if (v_intManageUserReturnPage != 0)
+{
+    <form action="@Url.Action("List", "ManageUsers" )" method="post">
+        <input type="hidden" name="v_strSearchString" value="@v_strManageuserSearchString">
+        <button type="submit" name="v_intReturnPage" value="@v_intManageUserReturnPage" class="btn btn-link">Return To List</button>
+    </form>
+}
+else
+{
+    <form action="@Url.Action("Index", "Home")" method="post">
+        <button type="submit" name="v_intReturnPage" class="btn btn-link">Home</button>
+    </form>
+}
+
+

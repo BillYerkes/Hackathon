@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Matriarchy.Models.ReportServiceRecommendations>
+
+@{
+    ViewData["Title"] = "Compare Services";
+}
+
+    <h2>Service Recommendations Report</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Provider
+            </th>
+            <th>
+               Recomendations
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recommendations)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
