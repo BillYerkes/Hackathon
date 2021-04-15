@@ -1,0 +1,197 @@
+CREATE TABLE `aspnetroleclaims` (
+  `Id` int NOT NULL,
+  `ClaimType` longtext,
+  `ClaimValue` longtext,
+  `RoleId` varchar(255) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_AspNetRoleClaims_RoleId` (`RoleId`),
+  CONSTRAINT `FK_AspNetRoleClaims_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `aspnetroles` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `aspnetroles` (
+  `Id` varchar(255) NOT NULL,
+  `ConcurrencyStamp` longtext,
+  `Name` varchar(256) DEFAULT NULL,
+  `NormalizedName` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `RoleNameIndex` (`NormalizedName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `aspnetuserclaims` (
+  `Id` int NOT NULL,
+  `ClaimType` longtext,
+  `ClaimValue` longtext,
+  `UserId` varchar(255) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_AspNetUserClaims_UserId` (`UserId`),
+  CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `aspnetusers` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `aspnetuserlogins` (
+  `LoginProvider` varchar(255) NOT NULL,
+  `ProviderKey` varchar(255) NOT NULL,
+  `ProviderDisplayName` longtext,
+  `UserId` varchar(255) NOT NULL,
+  PRIMARY KEY (`LoginProvider`,`ProviderKey`),
+  KEY `IX_AspNetUserLogins_UserId` (`UserId`),
+  CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `aspnetusers` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `aspnetuserroles` (
+  `UserId` varchar(255) NOT NULL,
+  `RoleId` varchar(255) NOT NULL,
+  PRIMARY KEY (`UserId`,`RoleId`),
+  KEY `IX_AspNetUserRoles_RoleId` (`RoleId`),
+  KEY `IX_AspNetUserRoles_UserId` (`UserId`),
+  CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `aspnetroles` (`Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `aspnetusers` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `aspnetusers` (
+  `UserID` bigint NOT NULL AUTO_INCREMENT,
+  `Id` varchar(255) NOT NULL,
+  `AccessFailedCount` int NOT NULL,
+  `ConcurrencyStamp` longtext,
+  `Email` varchar(256) DEFAULT NULL,
+  `EmailConfirmed` bit(1) NOT NULL,
+  `LockoutEnabled` bit(1) NOT NULL,
+  `LockoutEnd` datetime(6) DEFAULT NULL,
+  `NormalizedEmail` varchar(256) DEFAULT NULL,
+  `NormalizedUserName` varchar(256) DEFAULT NULL,
+  `PasswordHash` longtext,
+  `PhoneNumber` longtext,
+  `PhoneNumberConfirmed` bit(1) NOT NULL,
+  `SecurityStamp` longtext,
+  `TwoFactorEnabled` bit(1) NOT NULL,
+  `UserName` varchar(256) DEFAULT NULL,
+  `RecommendedService` bigint DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `UserIDIndex` (`UserID`),
+  UNIQUE KEY `UserNameIndex` (`NormalizedUserName`),
+  KEY `EmailIndex` (`NormalizedEmail`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `aspnetusertokens` (
+  `UserId` varchar(255) NOT NULL,
+  `LoginProvider` varchar(255) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Value` longtext,
+  PRIMARY KEY (`UserId`,`LoginProvider`,`Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `failedloginattempts` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `IPAddress` varchar(500) NOT NULL,
+  `UserID` varchar(500) NOT NULL,
+  `AttemptDateTime` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `movieservices` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `MovieCD` bigint NOT NULL,
+  `ServiceCD` bigint NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `MovieServiceIndex` (`MovieCD`,`ServiceCD`),
+  KEY `ServiceCD_idx` (`ServiceCD`),
+  CONSTRAINT `MovieCD` FOREIGN KEY (`MovieCD`) REFERENCES `movies` (`ID`),
+  CONSTRAINT `ServiceCD` FOREIGN KEY (`ServiceCD`) REFERENCES `services` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=649 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `movies` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `Description` varchar(500) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Description` (`Description`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `issues` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `UserCD` bigint NOT NULL,
+  `IssueDateTime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `Subject` varchar(500) NOT NULL,
+  `Description` varchar(500) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `networks` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `Description` varchar(500) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Description` (`Description`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `networkservices` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `NetworkCD` bigint NOT NULL,
+  `ServiceCD` bigint NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `NetworkServiceIndex` (`NetworkCD`,`ServiceCD`),
+  KEY `ServiceCD_idx` (`ServiceCD`),
+  CONSTRAINT `NetworkCD` FOREIGN KEY (`NetworkCD`) REFERENCES `networks` (`ID`),
+  CONSTRAINT `Service` FOREIGN KEY (`ServiceCD`) REFERENCES `services` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `series` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `Description` varchar(500) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Description` (`Description`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `serieserviceseasons` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `SerieCD` bigint NOT NULL,
+  `ServiceCD` bigint NOT NULL,
+  `Description` varchar(500) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `SerieServiceIndex` (`SerieCD`,`ServiceCD`),
+  KEY `ServiceCD_idx` (`ServiceCD`),
+  CONSTRAINT `SeriesCD` FOREIGN KEY (`SerieCD`) REFERENCES `series` (`ID`),
+  CONSTRAINT `ServicesCD` FOREIGN KEY (`ServiceCD`) REFERENCES `services` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `services` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `Description` varchar(50) NOT NULL,
+  `Price` decimal(13,2) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Description` (`Description`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `userfavoritemovies` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `UserCD` bigint NOT NULL,
+  `MovieCD` bigint NOT NULL,
+  `Rating` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UserMovieIndex` (`UserCD`,`MovieCD`),
+  KEY `MovieCD_idx` (`MovieCD`),
+  CONSTRAINT `MovieCode` FOREIGN KEY (`MovieCD`) REFERENCES `movies` (`ID`),
+  CONSTRAINT `UserCD` FOREIGN KEY (`UserCD`) REFERENCES `aspnetusers` (`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `userfavoritenetworks` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `UserCD` bigint NOT NULL,
+  `NetworkCD` bigint NOT NULL,
+  `Rating` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UserNetworkIndex` (`UserCD`,`NetworkCD`),
+  KEY `NetworkCD_1_idx` (`NetworkCD`),
+  CONSTRAINT `NetworkCD_1` FOREIGN KEY (`NetworkCD`) REFERENCES `networks` (`ID`),
+  CONSTRAINT `UserCD_1` FOREIGN KEY (`UserCD`) REFERENCES `aspnetusers` (`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `userfavoriteseries` (
+  `ID` bigint NOT NULL AUTO_INCREMENT,
+  `UserCD` bigint NOT NULL,
+  `SerieCD` bigint NOT NULL,
+  `Rating` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UserSeriesIndex` (`UserCD`,`SerieCD`),
+  KEY `SeriesCD_2_idx` (`SerieCD`),
+  CONSTRAINT `SeriesCD_2` FOREIGN KEY (`SerieCD`) REFERENCES `series` (`ID`),
+  CONSTRAINT `UserCD_2` FOREIGN KEY (`UserCD`) REFERENCES `aspnetusers` (`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+SELECT * FROM umkc_hackathon_2021.aspnetuserroles;

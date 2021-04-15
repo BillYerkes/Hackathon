@@ -1,0 +1,581 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddServiceMovie`(
+    IN MovieCD BigInt, ServiceCD BigInt)
+begin
+    INSERT INTO `,umkc_hackathon_2021`.`movieservices`
+        (`MovieCD`,`ServiceCD`)
+    VALUES
+       (MovieCD,ServiceCD);
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddServiceNetwork`(
+    IN NetworkCD BigInt, ServiceCD BigInt)
+begin
+    INSERT INTO `,umkc_hackathon_2021`.`networkservices`
+        (`NetworkCD`,`ServiceCD`)
+    VALUES
+       (NetworkCD,ServiceCD);
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddServiceSerie`(
+    IN SerieCD BigInt, ServiceCD BigInt, OUT ID  bigint)
+begin
+    INSERT INTO `,umkc_hackathon_2021`.`serieserviceseasons`
+        (`SerieCD`,`ServiceCD`,`Description`)
+    VALUES
+       (SerieCD,ServiceCD,"");
+
+set @ID = last_insert_id();
+select @ID;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllIssues`()
+begin
+SELECT issues.ID AS Id, issues.UserCD AS UserCD, issues.IssueDateTime AS IssueDateTime, 
+       issues.Subject AS Subject,  issues.Description AS Description,  IFNULL(aspnetusers.Email,"Anonymous") AS Email
+    FROM
+    issues 
+    LEFT JOIN
+    aspnetusers ON (issues.UserCD = aspnetusers.UserID)
+    order By  Id DESC;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetMovies`(
+    )
+BEGIN
+SELECT movies.ID AS ID,  movies.Description AS Description, 0 as Rating
+    FROM movies
+    Order by movies.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetMoviesFavorites`(
+     IN UserCD BigInt
+)
+BEGIN
+SELECT movies.ID AS ID, movies.Description  AS Description, userfavoritemovies.Rating AS Rating
+    FROM
+    movies 
+    LEFT JOIN
+    userfavoritemovies ON (movies.ID = userfavoritemovies.MovieCD and userfavoritemovies.UserCD = UserCD)
+    order By  movies.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetNetworks`(
+    )
+BEGIN
+SELECT networks.ID, networks.Description, 0 as Rating 
+    FROM networks
+    Order by networks.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetNetworksFavorites`(
+    IN UserCD BigInt
+)
+BEGIN
+SELECT  networks.ID AS ID,  networks.Description AS Description, userfavoritenetworks.Rating as Rating
+    FROM
+    networks 
+    LEFT JOIN
+    userfavoritenetworks ON (networks.ID = userfavoritenetworks.NetworkCD and userfavoritenetworks.UserCD = UserCD)
+     order By  networks.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetSeries`(
+    )
+BEGIN
+SELECT series.ID, series.Description, 0 as Rating
+    FROM series
+    Order by series.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetSeriesFavorites`(
+     IN UserCD BigInt
+)
+BEGIN
+SELECT series.ID AS ID,  series.Description AS Description, userfavoriteseries.Rating as Rating 
+	FROM
+    series
+    LEFT JOIN
+    userfavoriteseries ON (series.ID = userfavoriteseries.SerieCD and userfavoriteseries.UserCD = UserCD)
+    order By  series.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetServiceDetails`(
+    IN ServiceCD BigInt(20)
+)
+BEGIN
+SELECT 'NETWORK' AS Type, networkservices.ID AS ID, networkservices.ServiceCD AS ServiceCD, networks.Description AS Description, '' AS Seasons 
+    FROM `networkservices`, `networks`
+    WHERE `networks`.`ID` = `networkservices`.`NetworkCD`
+    And  networkservices.ServiceCD = ServiceCD
+UNION ALL        
+SELECT 'MOVIE' AS Type, movieservices.ID AS ID, movieservices.ServiceCD AS ServiceCD, movies.Description AS Description, '' AS Seasons 
+    FROM `movieservices`, `movies`
+    WHERE `movies`.`ID` = `movieservices`.`MovieCD`
+    And  movieservices.ServiceCD = ServiceCD
+UNION ALL    
+SELECT 'SERIES' AS Type, serieserviceseasons.ID AS ID, serieserviceseasons.ServiceCD as ServiceCD, series.Description AS Description, serieserviceseasons.Description AS Seasons 
+    FROM `series`, `serieserviceseasons`
+    WHERE `series`.`ID` = `serieserviceseasons`.`SerieCD` 
+    And  serieserviceseasons.ServiceCD = ServiceCD;     
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetServiceMoviesFavorites`(
+    IN ServiceCD BigInt, IN UserCD BigInt
+)
+BEGIN
+SELECT movieservices.ID AS ID, movies.ID AS MovieCD, movieservices.ServiceCD AS ServiceCD, movies.Description  AS Description, userfavoritemovies.Rating AS Rating
+    FROM
+    movies INNER JOIN movieservices ON (movies.ID = movieservices.MovieCD and movieservices.ServiceCD = ServiceCD)
+    LEFT JOIN
+    userfavoritemovies ON (movies.ID = userfavoritemovies.MovieCD and userfavoritemovies.UserCD = UserCD)
+    order By  movies.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetServiceNetworks`(
+    IN ServiceCD BigInt
+)
+BEGIN
+SELECT networkservices.ID AS ID, networks.ID AS NetworkCD, networkservices.ServiceCD AS ServiceCD, networks.Description AS Description, 0 as Rating
+    FROM networkservices, networks
+    WHERE networks.ID = networkservices.NetworkCD
+    And  networkservices.ServiceCD = ServiceCD
+    Order by networks.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetServiceNetworksFavorites`(
+    IN ServiceCD BigInt, IN UserCD BigInt
+)
+BEGIN
+SELECT networkservices.ID AS ID, networks.ID AS NetworkCD, networkservices.ServiceCD AS ServiceCD, networks.Description AS Description, userfavoritenetworks.Rating as Rating
+    FROM
+    networks INNER JOIN networkservices ON (networks.ID = networkservices.NetworkCD and networkservices.ServiceCD = ServiceCD)
+    LEFT JOIN
+    userfavoritenetworks ON (networks.ID = userfavoritenetworks.NetworkCD and userfavoritenetworks.UserCD = UserCD)
+     order By  networks.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetServiceSeries`(
+    IN ServiceCD BigInt
+)
+BEGIN
+
+SELECT serieserviceseasons.ID AS ID, series.ID AS SerieCD, serieserviceseasons.ServiceCD as ServiceCD, series.Description AS Description, serieserviceseasons.Description AS Seasons, 0 as Rating 
+    FROM `series`, `serieserviceseasons`
+    WHERE `series`.`ID` = `serieserviceseasons`.`SerieCD` 
+    And  serieserviceseasons.ServiceCD = ServiceCD
+    order by series.Description;
+       
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetServiceSeriesFavorites`(
+    IN ServiceCD BigInt, IN UserCD BigInt
+)
+BEGIN
+SELECT serieserviceseasons.ID AS ID, series.ID AS SerieCD, serieserviceseasons.ServiceCD as ServiceCD, series.Description AS Description, serieserviceseasons.Description AS Seasons, userfavoriteseries.Rating as Rating 
+    FROM
+    series INNER JOIN serieserviceseasons ON (series.ID = serieserviceseasons.SerieCD and serieserviceseasons.ServiceCD = ServiceCD)
+    LEFT JOIN
+    userfavoriteseries ON (series.ID = userfavoriteseries.SerieCD and userfavoriteseries.UserCD = UserCD)
+    order By  series.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetUserIssues`( IN UserCD BigInt)
+BEGIN
+SELECT issues.ID AS Id, issues.UserCD AS UserCD, issues.IssueDateTime AS IssueDateTime, 
+       issues.Subject AS Subject,  issues.Description AS Description,  IFNULL(aspnetusers.Email,"Anonymous") AS Email
+    FROM
+    issues 
+    LEFT JOIN
+    aspnetusers ON (issues.UserCD = aspnetusers.UserID)
+    where  issues.UserCD = UserCD
+    order By  issues.IssueDateTime DESC;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertFailedLoginAttempt`(
+    IN IPAddress varchar(500), UserID varchar(500))
+begin
+    INSERT INTO `,umkc_hackathon_2021`.`failedloginattempts`
+        (`IPAddress`,`UserID`)
+    VALUES
+       (IPAddress,UserID);
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RateMovie`(
+    IN UserCD BigInt, MovieCD BigInt, Rating BigInt)
+begin
+  IF EXISTS (select ID from `,umkc_hackathon_2021`.`userfavoritemovies` 
+     where `userfavoritemovies`.`UserCD` = UserCD and `userfavoritemovies`.`MovieCD` = MovieCD) THEN
+    UPDATE `,umkc_hackathon_2021`.`userfavoritemovies` 
+        SET `Rating` = Rating 
+        where `userfavoritemovies`.`UserCD` = UserCD and `userfavoritemovies`.`MovieCD` = MovieCD;
+  ELSE 
+    INSERT INTO `,umkc_hackathon_2021`.`userfavoritemovies`
+        (`UserCD`,`MovieCD`,`Rating`)
+    VALUES
+       (UserCD,MovieCD,Rating);
+  END IF;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RateNetwork`(
+    IN UserCD BigInt, NetworkCD BigInt, Rating BigInt)
+begin
+  IF EXISTS (select ID from `,umkc_hackathon_2021`.`userfavoritenetworks` 
+     where `userfavoritenetworks`.`UserCD` = UserCD and `userfavoritenetworks`.`NetworkCD` = NetworkCD) THEN
+    UPDATE `,umkc_hackathon_2021`.`userfavoritenetworks` 
+        SET `Rating` = Rating 
+        where `userfavoritenetworks`.`UserCD` = UserCD and `userfavoritenetworks`.`NetworkCD` = NetworkCD;
+  ELSE 
+    INSERT INTO `,umkc_hackathon_2021`.`userfavoritenetworks`
+        (`UserCD`,`NetworkCD`,`Rating`)
+    VALUES
+       (UserCD,NetworkCD,Rating);
+  END IF;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RateSerie`(
+    IN UserCD BigInt, SerieCD BigInt, Rating BigInt)
+begin
+  IF EXISTS (select ID from `,umkc_hackathon_2021`.`userfavoriteseries` 
+     where `userfavoriteseries`.`UserCD` = UserCD and `userfavoriteseries`.`SerieCD` = SerieCD) THEN
+    UPDATE `,umkc_hackathon_2021`.`userfavoriteseries` 
+        SET `Rating` = Rating 
+        where `userfavoriteseries`.`UserCD` = UserCD and `userfavoriteseries`.`SerieCD` = SerieCD;
+  ELSE 
+    INSERT INTO `,umkc_hackathon_2021`.`userfavoriteseries`
+        (`UserCD`,`SerieCD`,`Rating`)
+    VALUES
+       (UserCD,SerieCD,Rating);
+  END IF;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RecommendedService`(
+    IN UserID varchar(250), ServiceID BigInt)
+begin
+UPDATE `,umkc_hackathon_2021`.`aspnetusers`
+SET
+`RecommendedService` = ServiceID
+WHERE `Id` = UserID;
+  
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RemoveServiceMovie`(
+    IN MovieServiceID BigInt)
+begin
+	DELETE FROM `,umkc_hackathon_2021`.`movieservices`
+	 where `ID` = MovieServiceID;
+
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RemoveServiceNetwork`(
+    IN NetworkServiceID BigInt)
+begin
+	DELETE FROM `,umkc_hackathon_2021`.`networkservices`
+	 where `ID` = NetworkServiceID;
+
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RemoveServiceSerie`(
+    IN SerieServiceID BigInt)
+begin
+	DELETE FROM `,umkc_hackathon_2021`.serieserviceseasons
+	 where `ID` = SerieServiceID;
+
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportFailedLoginAttempts`()
+begin
+
+SELECT  UserID, IPAddress, Count(ID) as Count
+FROM `,umkc_hackathon_2021`.`failedloginattempts`
+	group by UserID, IPAddress
+    order by Count DESC;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportFavoriteMovies`()
+BEGIN
+SELECT  movies.ID, movies.description as Description, avg(Rating) as AvgRating, Count(movies.ID) as Count
+FROM userfavoritemovies
+Join movies
+on movies.ID = userfavoritemovies.MovieCD 
+group by movies.ID
+order by AvgRating DESC
+Limit 10;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceMovieScore`(
+    IN UserCD BigInt
+)
+BEGIN
+select services.ID, services.Description, sum(userfavoritemovies.Rating), count(userfavoritemovies.ID)
+
+FROM services
+
+left join movieservices On services.ID = movieservices.ServiceCD
+join userfavoritemovies on movieservices.MovieCD = userfavoritemovies.MovieCD 
+and userfavoritemovies.UserCD = UserCD
+
+group by services.ID;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportServiceOfferingCount`()
+begin
+
+Select Services_0.ID, Services_0.Description, MovieCount, NetworkCount, SerieCount from
+( Select * from services) as Services_0
+  left join
+( SELECT ServiceCD, Count(ID) as MovieCount 
+FROM movieservices
+group by 
+serviceCD ) AS M on Services_0.ID = M.ServiceCD
+left join
+( SELECT ServiceCD, Count(ID) as NetworkCount 
+FROM networkservices
+group by 
+serviceCD ) AS N on Services_0.ID = N.ServiceCD
+left join
+( SELECT ServiceCD, Count(ID) as SerieCount 
+FROM serieserviceseasons
+group by 
+serviceCD ) AS S on Services_0.ID = S.ServiceCD;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportFavoriteSeries`()
+begin
+
+SELECT  series.ID, series.description, avg(Rating) as AvgRating, Count(series.ID) as Count
+FROM userfavoriteseries
+Join series
+on series.ID = userfavoriteseries.SerieCD
+group by series.ID
+order by AvgRating DESC
+Limit 10;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportFavoriteNetworks`()
+begin
+
+SELECT  networks.ID, networks.description, avg(Rating) as AvgRating, Count(networks.ID) as Count
+FROM userfavoritenetworks
+Join networks
+on networks.ID = userfavoritenetworks.NetworkCD 
+group by networks.ID
+order by AvgRating DESC
+Limit 10;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceMoviesRightJoinMovies`(
+    IN ServiceCD BigInt
+)
+BEGIN
+SELECT movies.ID AS ID, movieservices.ServiceCD AS ServiceCD, movies.Description AS Description, movieservices.ID AS MovieServiceID
+    FROM `movieservices`
+    right Join  `movies`
+    ON
+    `movies`.`ID` = `movieservices`.`MovieCD`
+    And  movieservices.ServiceCD = ServiceCD
+    Order by movies.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceMoviesRightJoinServices`(
+    IN MovieCD BigInt
+)
+BEGIN
+SELECT services.ID AS ID, movieservices.MovieCD AS MovieCD, services.Description AS Description, movieservices.ID AS MovieServiceID
+    FROM `movieservices`
+    right Join  `services`
+    ON
+    `services`.`ID` = `movieservices`.`ServiceCD`
+    And  movieservices.MovieCD = MovieCD
+    Order by services.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceNetworkScore`(
+    IN UserCD BigInt
+)
+BEGIN
+SELECT services.ID, services.Description, sum(userfavoritenetworks.Rating), count(userfavoritenetworks.ID)
+
+FROM services
+
+left join networkservices On services.ID = networkservices.ServiceCD
+join userfavoritenetworks on networkservices.NetworkCD = userfavoritenetworks.NetworkCD 
+and  userfavoritenetworks.UserCD = UserCD
+
+
+group by services.ID;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceNetworksRightJoinNetworks`(
+    IN ServiceCD BigInt
+)
+BEGIN
+SELECT networks.ID AS ID, networkservices.ServiceCD AS ServiceCD, networks.Description AS Description, networkservices.ID AS NetworkServiceID
+    FROM `networkservices`
+    right Join  `networks`
+    ON
+    `networks`.`ID` = `networkservices`.`NetworkCD`
+    And  networkservices.ServiceCD = ServiceCD
+    Order by networks.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceNetworksRightJoinServices`(
+    IN NetworkCD BigInt
+)
+BEGIN
+SELECT services.ID AS ID, networkservices.NetworkCD AS NetworkCD, services.Description AS Description, networkservices.ID AS NetworkServiceID
+    FROM `networkservices`
+    right Join  `services`
+    ON
+    `services`.`ID` = `networkservices`.`ServiceCD`
+    And  networkservices.NetworkCD = NetworkCD
+    Order by services.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceSeriesRightJoinSeries`(
+    IN ServiceCD BigInt
+)
+BEGIN
+SELECT series.ID AS ID, serieserviceseasons.ServiceCD AS ServiceCD, series.Description AS Description, serieserviceseasons.ID AS SerieServiceID, `serieserviceseasons`.`Description` AS Seasons
+    FROM `serieserviceseasons`
+    right Join  `series`
+    ON
+    `series`.`ID` = `serieserviceseasons`.`SerieCD`
+    And  serieserviceseasons.ServiceCD = ServiceCD
+    Order by series.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ServiceSeriesRightJoinServices`(
+    IN SeriesCD BigInt
+)
+BEGIN
+SELECT services.ID AS ID, serieserviceseasons.SerieCD AS SerieCD, services.Description AS Description, serieserviceseasons.ID AS SerieServiceID, serieserviceseasons.Description AS Seasons
+    FROM `serieserviceseasons`
+    right Join  `services`
+    ON
+    `services`.`ID` = `serieserviceseasons`.`ServiceCD`
+    And  serieserviceseasons.SerieCD = SeriesCD
+    Order by services.Description;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UnRateMovie`(
+    IN UserCD BigInt, MovieCD BigInt)
+begin
+
+SET @userFavoriteID = (select ID from `,umkc_hackathon_2021`.`userfavoritemovies` 
+     where `userfavoritemovies`.`UserCD` = UserCD and `userfavoritemovies`.`MovieCD` = MovieCD);
+     
+IF (@userFavoriteID IS Not NULL) THEN
+		DELETE FROM `,umkc_hackathon_2021`.`userfavoritemovies`
+		WHERE ID = @userFavoriteID;
+  END IF;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UnRateNetwork`(
+    IN UserCD BigInt, NetworkCD BigInt)
+begin
+
+SET @userFavoriteID = (select ID from `,umkc_hackathon_2021`.`userfavoritenetworks` 
+     where `userfavoritenetworks`.`UserCD` = UserCD and `userfavoritenetworks`.`NetworkCD` = NetworkCD);
+     
+IF (@userFavoriteID IS Not NULL) THEN
+		DELETE FROM `,umkc_hackathon_2021`.`userfavoritenetworks`
+		WHERE ID = @userFavoriteID;
+  END IF;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UnRateSerie`(
+    IN UserCD BigInt, SerieCD BigInt)
+begin
+
+SET @userFavoriteID = (select ID from `,umkc_hackathon_2021`.`userfavoriteseries` 
+     where `userfavoriteseries`.`UserCD` = UserCD and `userfavoriteseries`.`SerieCD` = SerieCD);
+     
+IF (@userFavoriteID IS Not NULL) THEN
+		DELETE FROM `,umkc_hackathon_2021`.`userfavoriteseries`
+		WHERE ID = @userFavoriteID;
+  END IF;
+end$$
+DELIMITER ;
