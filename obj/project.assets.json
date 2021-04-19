@@ -13814,11 +13814,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\UMKC\\CSC590\\Hackathon\\semester-group-assignment-group-9-master\\Hackathon\\Matriarchy.csproj",
+      "projectUniqueName": "E:\\UMKC\\CSC590\\Hackathon\\semester-group-assignment-group-9-master\\Hackathon\\Hackathon\\Matriarchy.csproj",
       "projectName": "Matriarchy",
-      "projectPath": "E:\\UMKC\\CSC590\\Hackathon\\semester-group-assignment-group-9-master\\Hackathon\\Matriarchy.csproj",
+      "projectPath": "E:\\UMKC\\CSC590\\Hackathon\\semester-group-assignment-group-9-master\\Hackathon\\Hackathon\\Matriarchy.csproj",
       "packagesPath": "C:\\Users\\yer13\\.nuget\\packages\\",
-      "outputPath": "E:\\UMKC\\CSC590\\Hackathon\\semester-group-assignment-group-9-master\\Hackathon\\obj\\",
+      "outputPath": "E:\\UMKC\\CSC590\\Hackathon\\semester-group-assignment-group-9-master\\Hackathon\\Hackathon\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

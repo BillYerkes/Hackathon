@@ -1,0 +1,62 @@
+﻿@model PaginatedList<Matriarchy.Models.CountyPlans>
+
+@{
+    ViewData["Title"] = "County Plans";
+}
+
+<h2>County Plans</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Company Name</th>
+            <th class="text-center">Plan Name</th>
+            <th class="text-center">Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.PlanName)
+            </td>
+            <td>
+                <form action="" method="post">
+                    <input type="hidden" name="v_strTitle" value="@item.PlanName">
+                    <input type="hidden" name="v_intPlanID" value="@item.ID">
+                    <button formaction="PlanDetail" type="submit" class="btn btn-link">View</button>
+                </form>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<form action="@Url.Action("CountyPlans")" method="post">
+    <input type="hidden" name="v_strTitle" value="@Model.Title">
+    <input type="hidden" name="v_intCountyID" value="@Model.Filter">
+    @if (Model.HasPreviousPage)
+    {
+        <button type="submit" name="v_intPageNumber" value="@(Model.PageIndex -1)" class="btn btn-default">Previous</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Previous</button>
+    }
+    @if (Model.HasNextPage)
+    {
+        <button type="submit" Use name="v_intPageNumber" value="@(Model.PageIndex +1)" class="btn btn-default">Next</button>
+    }
+    else
+    {
+        <button class="btn btn-default" disabled="disabled">Next</button>
+    }
+</form>

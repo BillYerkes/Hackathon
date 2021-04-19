@@ -1,0 +1,39 @@
+﻿@model PaginatedList<Matriarchy.Models.Company>
+
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<h2>Companies</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">Name</th>
+            <th class="text-center">Plans</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                <form action="" method="post">
+                    <input type="hidden" name="v_strTitle" value="@item.CompanyName">
+                    <input type="hidden" name="v_intCompanyID" value="@item.ID">
+                    <button formaction="CompanyPlans" type="submit" class="btn btn-link">View</button> |
+                </form>
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+

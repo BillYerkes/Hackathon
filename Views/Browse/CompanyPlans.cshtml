@@ -1,0 +1,83 @@
+﻿@model PaginatedList<Matriarchy.Models.CompanyPlans>
+
+@{
+    ViewData["Title"] = "Company Plans";
+}
+
+<h2>Complany Plans</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Plan Name</th>
+            <th class="text-center">Monthly</th>
+            <th class="text-center">CoPay</th>
+            <th class="text-center">Deductible</th>
+            <th class="text-center">Emergency</th>
+            <th class="text-center">Preventative</th>
+            <th class="text-center">Preexisting</th>
+            <th class="text-center">Prescriptions</th>
+            <th class="text-center">Vision</th>
+            <th class="text-center">Dental</th>
+        </tr>
+        <tr>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center">Premium</th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center">Care</th>
+            <th class="text-center">Care</th>
+            <th class="text-center">Condition</th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.PlanName)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.MonthlyPremium)
+            </td>
+
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.Copay)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Deductible)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.EmergencyCare)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.PreventativeCare)
+            </td>
+
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.PreexistingCondition)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Prescriptions)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Vision)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Dental)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+

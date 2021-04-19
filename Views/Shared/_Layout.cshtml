@@ -34,12 +34,17 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse<b class="caret"></b></a>
                         <ul class="dropdown-menu" border: 1px solid #555;>
+                            <li><a asp-area="" asp-controller="Browse" asp-action="Counties">Counties</a></li>
+                            <li><a asp-area="" asp-controller="Browse" asp-action="Companies">Insurance Companies</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a asp-area="" asp-controller="Browse" asp-action="Service">Services</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a asp-area="" asp-controller="Browse" asp-action="Movies">Movies</a></li>
                             <li><a asp-area="" asp-controller="Browse" asp-action="Networks">Networks</a>   </li>
                             <li><a asp-area="" asp-controller="Browse" asp-action="Series">Series</a>   </li>
                         </ul>
+
+
                         @if (User.Identity.IsAuthenticated)
                         {
                         <li class="dropdown">

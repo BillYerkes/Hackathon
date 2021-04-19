@@ -73,6 +73,111 @@ namespace Matriarchy.Controllers
             }
         }
 
+
+        public IActionResult CountyCovid(string v_strCounty)
+        {
+            try
+            {
+                ViewBag.v_strCounty = v_strCounty;
+                ViewBag.v_strImage = "~/images/Covid/" + v_strCounty + ".png";
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+        public async Task<IActionResult> Counties(int v_intPageNumber = 1)
+        {
+            try
+            {
+                IQueryable<County> l_rsCounties;
+
+                l_rsCounties = from m in _context.Counties.FromSql("Call GetCounties()") select m;
+
+                return View(await PaginatedList<County>.CreateAsync(l_rsCounties.AsNoTracking(), v_intPageNumber, m_intPageSize));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+        public async Task<IActionResult> Companies(int v_intPageNumber = 1)
+        {
+            try
+            {
+                IQueryable<Company> l_rsCompanies;
+
+                //var l_rsCompanies = from m in _context.Companies select m;
+                l_rsCompanies = from m in _context.Companies.FromSql("Call GetCompanies()") select m;
+
+                return View(await PaginatedList<Company>.CreateAsync(l_rsCompanies.AsNoTracking(), v_intPageNumber, m_intPageSize));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        public async Task<IActionResult> CompanyPlans(int v_intCompanyID, string v_strTitle, int v_intPageNumber = 1)
+        {
+            try
+            {
+                IQueryable<CompanyPlans> l_rsCompanyPlans;
+
+                //var l_rsCompanies = from m in _context.Companies select m;
+                l_rsCompanyPlans = from m in _context.Company_Plans.FromSql("Call GetCompanyPlans({0})", v_intCompanyID) select m;
+
+                return View(await PaginatedList<CompanyPlans>.CreateAsync(l_rsCompanyPlans.AsNoTracking(), v_intPageNumber, m_intPageSize));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        public async Task<IActionResult> CountyPlans(int v_intCountyID, string v_strTitle, int v_intPageNumber = 1)
+        {
+            try
+            {
+                IQueryable<CountyPlans> l_rsCountyPlans;
+
+                l_rsCountyPlans = from m in _context.County_Plans.FromSql("Call GetCountyPlans({0})", v_intCountyID) select m;
+
+                return View(await PaginatedList<CountyPlans>.CreateAsync(l_rsCountyPlans.AsNoTracking(), v_intPageNumber, m_intPageSize, v_intCountyID, v_strTitle));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        public async Task<IActionResult> PlanDetail(int v_intPlanID, string v_strTitle, int v_intPageNumber = 1)
+        {
+            try
+            {
+                IQueryable<PlanDetail> l_rsPlanDetail;
+
+                l_rsPlanDetail = from m in _context.PlanDetails.FromSql("Call GetPlanDetails({0})", v_intPlanID) select m;
+
+                return View(await PaginatedList<PlanDetail>.CreateAsync(l_rsPlanDetail.AsNoTracking(), v_intPageNumber, m_intPageSize, v_intPlanID, v_strTitle));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         //**********************************************************************************************************
         // ServiceMovies
         //

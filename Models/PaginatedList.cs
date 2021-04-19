@@ -21,7 +21,7 @@ namespace Matriarchy.Models
 
         public string Title { get; private set; }
 
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize, int filter )
+        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize, int filter)
         {
             Filter = filter;
             PageIndex = pageIndex;
@@ -89,7 +89,7 @@ namespace Matriarchy.Models
         {
             var count = await source.CountAsync();
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
-            return new PaginatedList<T>(items, count, pageIndex, pageSize ,filter);
+            return new PaginatedList<T>(items, count, pageIndex, pageSize, filter);
         }
 
         public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize, int filter, string title)
@@ -106,13 +106,13 @@ namespace Matriarchy.Models
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return new PaginatedList<T>(items, count, pageIndex, pageSize, searchString, title);
         }
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize, string searchString )
+        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize, string searchString)
         {
             var count = await source.CountAsync();
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return new PaginatedList<T>(items, count, pageIndex, pageSize, searchString);
         }
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize )
+        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
         {
             var count = await source.CountAsync();
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();

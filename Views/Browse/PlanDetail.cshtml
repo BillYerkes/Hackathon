@@ -1,0 +1,89 @@
+﻿
+
+@model PaginatedList<Matriarchy.Models.PlanDetail>
+
+@{
+    ViewData["Title"] = "Insurance Plan Detail";
+}
+
+    <h2>Insurance Plan Detail</h2>
+
+@foreach (var item in Model)
+{
+    <table>
+        <tr>
+            <td>ID </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.ID)</td>
+        </tr>
+
+        <tr>
+            <td>Company Name: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+        </tr>
+
+        <tr>
+            <td>Plan Name: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.PlanName)</td>
+        </tr>
+
+        <tr>
+            <td>Monthly Premium: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.MonthlyPremium)</td>
+        </tr>
+
+        <tr>
+            <td>Copay: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.Copay)</td>
+        </tr>
+
+        <tr>
+            <td>Deductible: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.Deductible)</td>
+        </tr>
+
+        <tr>
+            <td>Emergency Care: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.EmergencyCare)</td>
+        </tr>
+
+        <tr>
+            <td>Preventative Care: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.PreventativeCare)</td>
+        </tr>
+
+        <tr>
+            <td>Preexisting Conditions: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.PreexistingCondition)</td>
+        </tr>
+
+        <tr>
+            <td>Prescriptions: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.Prescriptions)</td>
+        </tr>
+
+        <tr>
+            <td>Vision: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.Vision)</td>
+        </tr>
+
+        <tr>
+            <td>Dental: </td>
+            <td WIDTH="50"></td>
+            <td>@Html.DisplayFor(modelItem => item.Dental)</td>
+        </tr>
+    </table>
+
+
+}
+

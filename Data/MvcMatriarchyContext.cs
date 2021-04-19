@@ -15,6 +15,11 @@ namespace Matriarchy.Data
         {
         }
 
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<County> Counties { get; set; }
+        public DbSet<CompanyPlans> Company_Plans { get; set; }
+        public DbSet<CountyPlans> County_Plans { get; set; }
+        public DbSet<PlanDetail> PlanDetails { get; set; }
         public DbSet<Issue> Issues { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Movie> Movies { get; set; }
@@ -25,7 +30,6 @@ namespace Matriarchy.Data
         public DbSet<SerieRating> GetSerieFavorites { get; set; }
         public DbSet<MovieRating> GetMovieFavorites { get; set; }
         public DbSet<NetworkRating> GetNetworkFavorites { get; set; }
-
 
         public DbSet<ServiceSerie> GetServiceSeries { get; set; }
         public DbSet<ServiceMovie> GetServiceMovies { get; set; }
