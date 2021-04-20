@@ -56,10 +56,9 @@ namespace Matriarchy.Controllers
         {
             try
             {
-                ViewData["Message"] = "The Matriarchy streaming TV services evaluator application is a senior class project for " +
-                                      "UMKC CSC 451R Software Engineering Capstone class.  The goal is to allow users to be " +
-                                      "able to easily compare different Streaming TV services by evaluating their favorite " +
-                                      "TV shows, networks and movies, which the application will then turn into a recomendation.";
+                ViewData["Message"] = "The Matriarchy web application is a tool to help uninsured residents " +
+                                      "of New York state find health insurance to match their needs.  The application " +
+                                      "all provides some historic information about Covid cases by county.";
 
                 return View();
             }
@@ -78,7 +77,7 @@ namespace Matriarchy.Controllers
         {
             try
             {
-                ViewData["Message"] = "We can help you find your Streaming Serice, get in our Matriarchy!";
+                ViewData["Message"] = "We can help you find the health insurance for you.";
                 return View();
             }
             catch (Exception ex)
