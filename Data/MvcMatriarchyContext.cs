@@ -21,34 +21,6 @@ namespace Matriarchy.Data
         public DbSet<CountyPlans> County_Plans { get; set; }
         public DbSet<PlanDetail> PlanDetails { get; set; }
         public DbSet<Issue> Issues { get; set; }
-        public DbSet<Service> Services { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Network> Networks { get; set; }
-        public DbSet<Serie> Series { get; set; }
-        public DbSet<SerieServiceSeason> SerieServiceSeasons { get; set; }
-
-        public DbSet<SerieRating> GetSerieFavorites { get; set; }
-        public DbSet<MovieRating> GetMovieFavorites { get; set; }
-        public DbSet<NetworkRating> GetNetworkFavorites { get; set; }
-
-        public DbSet<ServiceSerie> GetServiceSeries { get; set; }
-        public DbSet<ServiceMovie> GetServiceMovies { get; set; }
-        public DbSet<ServiceNetwork> GetServiceNetworks { get; set; }
-
-        public DbSet<ServiceMoviesRightJoinMovies> ServiceMoviesRightJoinMovies { get; set; }
-                                                   
-        public DbSet<ServiceNetworksRightJoinNetworks> ServiceNetworksRightJoinNetworks { get; set; }
-
-         public DbSet<ServiceSeriesRightJoinSeries> ServiceSeriesRightJoinSeries { get; set; }
-
-
-        public DbSet<ServiceMoviesRightJoinServices> ServiceMoviesRightJoinServices { get; set; }
-
-        public DbSet<ServiceNetworksRightJoinServices> ServiceNetworksRightJoinServices { get; set; }
-
-        public DbSet<ServiceSeriesRightJoinServices> ServiceSeriesRightJoinServices { get; set; }
-
-        public DbSet<CompareServices> CompareServices { get; set; }
 
         public DbSet<ReportServiceRecommendations> ReportServiceRecommendations { get; set; }
 

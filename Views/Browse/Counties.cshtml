@@ -4,14 +4,14 @@
     ViewData["Title"] = "Counties";
 }
 
-<h2>Companies</h2>
+<h2>Counties</h2>
 
 <table class="table">
     <thead>
         <tr>
             <th class="text-center">Name</th>
-            <th class="text-center">Providers</th>
-            <th></th>
+            <th class="text-left">Providers</th>
+            <th class="text-left">Covid Cases</th>
         </tr>
     </thead>
     <tbody>
@@ -20,9 +20,6 @@
         <tr>
             <td align="left">
                 @Html.DisplayFor(modelItem => item.CountyName)
-            </td>
-            <td align="center">
-                @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
                 <form action="" method="post">

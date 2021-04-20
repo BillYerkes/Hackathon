@@ -18,7 +18,7 @@ namespace Matriarchy.Controllers
         // Inputs:
         // ILogger<ReportsController> logger    Logger for logging errors
         //**********************************************************************************************************
-        public HomeController( ILogger<ReportsController> logger)
+        public HomeController( ILogger<HomeController> logger)
         {
             try
             {

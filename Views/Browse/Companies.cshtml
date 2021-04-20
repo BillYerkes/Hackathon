@@ -21,14 +21,11 @@
             <td align="left">
                 @Html.DisplayFor(modelItem => item.CompanyName)
             </td>
-            <td align="center">
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
             <td>
                 <form action="" method="post">
                     <input type="hidden" name="v_strTitle" value="@item.CompanyName">
                     <input type="hidden" name="v_intCompanyID" value="@item.ID">
-                    <button formaction="CompanyPlans" type="submit" class="btn btn-link">View</button> |
+                    <button formaction="CompanyPlans" type="submit" class="btn btn-link">View</button>
                 </form>
             </td>
 

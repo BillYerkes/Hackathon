@@ -23,7 +23,6 @@ namespace Matriarchy.Models
 
             public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
 
-            public List<ServiceMovie> Data { get; set; }
         }
 
     }

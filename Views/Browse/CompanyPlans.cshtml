@@ -9,7 +9,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="text-center">ID</th>
             <th class="text-center">Plan Name</th>
             <th class="text-center">Monthly</th>
             <th class="text-center">CoPay</th>
@@ -22,7 +21,6 @@
             <th class="text-center">Dental</th>
         </tr>
         <tr>
-            <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center">Premium</th>
             <th class="text-center"></th>
@@ -40,20 +38,17 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td align="left">
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td align="center">
+            <td align="Left">
                 @Html.DisplayFor(modelItem => item.PlanName)
             </td>
-            <td align="center">
+            <td align="Right">
                 @Html.DisplayFor(modelItem => item.MonthlyPremium)
             </td>
 
-            <td align="left">
+            <td align="Right">
                 @Html.DisplayFor(modelItem => item.Copay)
             </td>
-            <td align="center">
+            <td align="Right">
                 @Html.DisplayFor(modelItem => item.Deductible)
             </td>
             <td align="center">
@@ -63,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.PreventativeCare)
             </td>
 
-            <td align="left">
+            <td align="center">
                 @Html.DisplayFor(modelItem => item.PreexistingCondition)
             </td>
             <td align="center">

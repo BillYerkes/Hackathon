@@ -9,10 +9,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="text-center">ID</th>
-            <th class="text-center">Company Name</th>
-            <th class="text-center">Plan Name</th>
-            <th class="text-center">Details</th>
+            <th class="text-left">Company Name</th>
+            <th class="text-left">Plan Name</th>
+            <th class="text-left">Details</th>
         </tr>
     </thead>
     <tbody>
@@ -20,12 +19,9 @@
         {
         <tr>
             <td align="left">
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td align="center">
                 @Html.DisplayFor(modelItem => item.CompanyName)
             </td>
-            <td align="center">
+            <td align="left">
                 @Html.DisplayFor(modelItem => item.PlanName)
             </td>
             <td>

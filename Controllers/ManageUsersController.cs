@@ -31,7 +31,7 @@ namespace Matriarchy.Controllers
         //            
         //**********************************************************************************************************
         public ManageUsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
-                                     ILogger<ReportsController> logger)
+                                     ILogger<ManageUsersController> logger)
         {
             try
             {
