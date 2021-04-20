@@ -79,6 +79,49 @@ CREATE TABLE `aspnetusertokens` (
   PRIMARY KEY (`UserId`,`LoginProvider`,`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `companies` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `CompanyName` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  UNIQUE KEY `Name_UNIQUE` (`CompanyName`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `company_counties` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `CompanyCD` int NOT NULL,
+  `CountyCD` int NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  UNIQUE KEY `company_county` (`CompanyCD`,`CountyCD`)
+) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `company_plans` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `CompanyCD` int NOT NULL,
+  `PlanName` varchar(100) NOT NULL,
+  `MonthlyPremium` decimal(10,0) NOT NULL,
+  `Copay` decimal(10,0) NOT NULL,
+  `Deductible` decimal(10,0) NOT NULL,
+  `EmergencyCare` tinyint NOT NULL,
+  `PreventativeCare` tinyint NOT NULL,
+  `PreexistingCondition` tinyint NOT NULL,
+  `Prescriptions` tinyint NOT NULL,
+  `Vision` tinyint NOT NULL,
+  `Dental` tinyint NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  UNIQUE KEY `CoPlanName` (`CompanyCD`,`PlanName`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `counties` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `CountyName` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  UNIQUE KEY `Name_UNIQUE` (`CountyName`)
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `failedloginattempts` (
   `ID` bigint NOT NULL AUTO_INCREMENT,
   `IPAddress` varchar(500) NOT NULL,
@@ -87,24 +130,6 @@ CREATE TABLE `failedloginattempts` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `movieservices` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `MovieCD` bigint NOT NULL,
-  `ServiceCD` bigint NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `MovieServiceIndex` (`MovieCD`,`ServiceCD`),
-  KEY `ServiceCD_idx` (`ServiceCD`),
-  CONSTRAINT `MovieCD` FOREIGN KEY (`MovieCD`) REFERENCES `movies` (`ID`),
-  CONSTRAINT `ServiceCD` FOREIGN KEY (`ServiceCD`) REFERENCES `services` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=649 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `movies` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `Description` varchar(500) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `Description` (`Description`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 CREATE TABLE `issues` (
   `ID` bigint NOT NULL AUTO_INCREMENT,
   `UserCD` bigint NOT NULL,
@@ -112,86 +137,4 @@ CREATE TABLE `issues` (
   `Subject` varchar(500) NOT NULL,
   `Description` varchar(500) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `networks` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `Description` varchar(500) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `Description` (`Description`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `networkservices` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `NetworkCD` bigint NOT NULL,
-  `ServiceCD` bigint NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `NetworkServiceIndex` (`NetworkCD`,`ServiceCD`),
-  KEY `ServiceCD_idx` (`ServiceCD`),
-  CONSTRAINT `NetworkCD` FOREIGN KEY (`NetworkCD`) REFERENCES `networks` (`ID`),
-  CONSTRAINT `Service` FOREIGN KEY (`ServiceCD`) REFERENCES `services` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `series` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `Description` varchar(500) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `Description` (`Description`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `serieserviceseasons` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `SerieCD` bigint NOT NULL,
-  `ServiceCD` bigint NOT NULL,
-  `Description` varchar(500) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `SerieServiceIndex` (`SerieCD`,`ServiceCD`),
-  KEY `ServiceCD_idx` (`ServiceCD`),
-  CONSTRAINT `SeriesCD` FOREIGN KEY (`SerieCD`) REFERENCES `series` (`ID`),
-  CONSTRAINT `ServicesCD` FOREIGN KEY (`ServiceCD`) REFERENCES `services` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `services` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `Description` varchar(50) NOT NULL,
-  `Price` decimal(13,2) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `Description` (`Description`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `userfavoritemovies` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `UserCD` bigint NOT NULL,
-  `MovieCD` bigint NOT NULL,
-  `Rating` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UserMovieIndex` (`UserCD`,`MovieCD`),
-  KEY `MovieCD_idx` (`MovieCD`),
-  CONSTRAINT `MovieCode` FOREIGN KEY (`MovieCD`) REFERENCES `movies` (`ID`),
-  CONSTRAINT `UserCD` FOREIGN KEY (`UserCD`) REFERENCES `aspnetusers` (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `userfavoritenetworks` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `UserCD` bigint NOT NULL,
-  `NetworkCD` bigint NOT NULL,
-  `Rating` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UserNetworkIndex` (`UserCD`,`NetworkCD`),
-  KEY `NetworkCD_1_idx` (`NetworkCD`),
-  CONSTRAINT `NetworkCD_1` FOREIGN KEY (`NetworkCD`) REFERENCES `networks` (`ID`),
-  CONSTRAINT `UserCD_1` FOREIGN KEY (`UserCD`) REFERENCES `aspnetusers` (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `userfavoriteseries` (
-  `ID` bigint NOT NULL AUTO_INCREMENT,
-  `UserCD` bigint NOT NULL,
-  `SerieCD` bigint NOT NULL,
-  `Rating` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UserSeriesIndex` (`UserCD`,`SerieCD`),
-  KEY `SeriesCD_2_idx` (`SerieCD`),
-  CONSTRAINT `SeriesCD_2` FOREIGN KEY (`SerieCD`) REFERENCES `series` (`ID`),
-  CONSTRAINT `UserCD_2` FOREIGN KEY (`UserCD`) REFERENCES `aspnetusers` (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-SELECT * FROM umkc_hackathon_2021.aspnetuserroles;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
