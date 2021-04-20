@@ -36,12 +36,6 @@
                         <ul class="dropdown-menu" border: 1px solid #555;>
                             <li><a asp-area="" asp-controller="Browse" asp-action="Counties">Counties</a></li>
                             <li><a asp-area="" asp-controller="Browse" asp-action="Companies">Insurance Companies</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a asp-area="" asp-controller="Browse" asp-action="Service">Services</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a asp-area="" asp-controller="Browse" asp-action="Movies">Movies</a></li>
-                            <li><a asp-area="" asp-controller="Browse" asp-action="Networks">Networks</a>   </li>
-                            <li><a asp-area="" asp-controller="Browse" asp-action="Series">Series</a>   </li>
                         </ul>
 
 
@@ -63,35 +57,14 @@
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li><a asp-area="" asp-controller="Compare" asp-action="Compare">Compare</a></li>
 
                             @if (User.IsInRole("Admin"))
                             {
 
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<b class="caret"></b></a>
-                                    <ul class="dropdown-menu" border: 1px solid #555;>
-                                        <li><a asp-area="" asp-controller="Reports" asp-action="ServiceRecommendations">Service Recommendations</a></li>
-                                        <li><a asp-area="" asp-controller="Reports" asp-action="ServiceOfferingCount">Service Offerings Count</a></li>
-                                        <li><a asp-area="" asp-controller="Reports" asp-action="FailedLoginAttempts">Failed Login Attempts</a>   </li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a asp-area="" asp-controller="Reports" asp-action="UserFavoriteMovies">Favorite Movies</a></li>
-                                        <li><a asp-area="" asp-controller="Reports" asp-action="UserFavoriteNetworks">Favorite Networks</a></li>
-                                        <li><a asp-area="" asp-controller="Reports" asp-action="UserFavoriteSeries">Favorite Series</a></li>
-                                    </ul>
-                                </li>
-
-
-                                <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
                                     <ul class="dropdown-menu" border: 1px solid #555;>
                                         <li><a asp-area="" asp-controller="ManageUsers" asp-action="List">Users</a>   </li>
-                                        <li><a asp-area="" asp-controller="ManageServices" asp-action="List">Services</a></li>
-
-                                        <li role="separator" class="divider"></li>
-                                        <li><a asp-area="" asp-controller="ManageOfferings" asp-action="Movies">Movies</a></li>
-                                        <li><a asp-area="" asp-controller="ManageOfferings" asp-action="Networks">Networks</a>   </li>
-                                        <li><a asp-area="" asp-controller="ManageOfferings" asp-action="Series">Series</a>   </li>
                                     </ul>
                                 </li>
                             }
